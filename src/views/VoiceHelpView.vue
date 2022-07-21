@@ -35,7 +35,7 @@
         <div style="margin-top: 5px"></div>
         <div class="content">
           <!-- <div v-html="message.content"></div> -->
-          <v-chip>
+          <v-chip color="light-blue">
             {{ message.content }}
           </v-chip>
           <chat-image
@@ -56,13 +56,10 @@
         @keydown.enter="sendMessage"
       ></v-text-field>
     </v-container>
-
-    <BottomNavigation />
   </div>
 </template>
 
 <script>
-import BottomNavigation from "../components/BottomNavigation.vue";
 import Router from "../router";
 
 export default {
@@ -80,9 +77,6 @@ export default {
       },
     ],
   }),
-  components: {
-    BottomNavigation,
-  },
   methods: {
     goBack() {
       console.log("going back");
@@ -94,6 +88,8 @@ export default {
     },
     openMic() {
       alert("mic clicked");
+      // try this library to use speech to text
+      // https://github.com/aofdev/vue-pwa-speech
     },
   },
 };
