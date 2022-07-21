@@ -1,12 +1,12 @@
 <template>
   <div class="home">
-    <v-toolbar>
-      <v-app-bar-nav-icon></v-app-bar-nav-icon>
-      <v-toolbar-title>Title</v-toolbar-title>
-      <v-spacer></v-spacer>
+    <v-toolbar flat>
+      <!-- <v-app-bar-nav-icon></v-app-bar-nav-icon> -->
       <v-btn icon>
         <v-icon>mdi-magnify</v-icon>
       </v-btn>
+      <v-spacer></v-spacer>
+      <v-toolbar-title>Narto</v-toolbar-title>
       <v-btn icon>
         <v-icon>mdi-heart</v-icon>
       </v-btn>
@@ -62,7 +62,7 @@
         </v-col>
       </v-row>
 
-      <v-row>
+      <v-row class="px-3">
         <v-btn outlined class="mr-auto">Detil Stasiun</v-btn>
         <v-btn color="primary">Arahkan</v-btn>
       </v-row>
@@ -71,33 +71,25 @@
         <div class="text-h5 mr-auto">Fasilitas</div>
         <div class="text-h5">Lihat Semua ></div>
       </v-row>
-      <v-row>
-        <v-card class="ml-4">
-          <v-img
-            src="https://cdn.vuetifyjs.com/images/cards/cooking.png"
-            class="white--text align-end"
-            gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
-            height="200px"
-            width="130px"
-            style="border-radius: 12px"
-          >
-            <v-card-title>Indomaret</v-card-title>
-            <v-card-subtitle>08.00 - 22.00</v-card-subtitle>
-          </v-img>
-        </v-card>
-        <v-card class="ml-4">
-          <v-img
-            src="https://cdn.vuetifyjs.com/images/cards/cooking.png"
-            class="white--text align-end"
-            gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
-            height="200px"
-            width="130px"
-            style="border-radius: 12px"
-          >
-            <v-card-title>Roti 'O</v-card-title>
-            <v-card-subtitle>08.00 - 23.00</v-card-subtitle>
-          </v-img>
-        </v-card>
+
+      <v-row class="px-3">
+        <RecycleScroller
+          class="scroller"
+          direction="horizontal"
+          :itemSize="140"
+          :items="facilities"
+          key-field="name"
+          v-slot="{ index }"
+        >
+          <!-- <HelloWorld :facilities="facility" /> -->
+          <!-- <div v-for="facility in facilities" :key="facility.id"> -->
+          <FacilityCard
+            ref="childs"
+            @wasClicked="testClick(facilities[index].id)"
+            :facilities="facilities[index]"
+          />
+          <!-- </div> -->
+        </RecycleScroller>
       </v-row>
     </v-container>
 
@@ -108,9 +100,63 @@
 <script>
 import BottomNavigation from "../components/BottomNavigation.vue";
 
+import Vue from "vue";
+import VueVirtualScroller from "vue-virtual-scroller";
+import "vue-virtual-scroller/dist/vue-virtual-scroller.css";
+// import HelloWorld from "@/components/HelloWorld.vue";
+
+Vue.use(VueVirtualScroller);
+
 export default {
+  data: function () {
+    return {
+      facilities: [
+        {
+          id: "001",
+          name: "Alfamart",
+        },
+        {
+          id: "002",
+          name: "bakso",
+        },
+        {
+          id: "003",
+          name: "roti 'o",
+        },
+        {
+          id: "004",
+          name: "Indomaret",
+        },
+        {
+          id: "005",
+          name: "tahu telor",
+        },
+      ],
+    };
+  },
   components: {
     BottomNavigation,
+    FacilityCard: () => import("../components/FacilityCard.vue"),
+    // HelloWorld,
+  },
+  methods: {
+    testClick(id) {
+      console.log(id);
+    },
   },
 };
 </script>
+
+<style scoped>
+.scroller {
+  height: 200px;
+  margin-bottom: -100px;
+}
+
+.user {
+  height: 32%;
+  padding: 0 12px;
+  display: flex;
+  align-items: center;
+}
+</style>
